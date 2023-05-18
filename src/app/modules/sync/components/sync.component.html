@@ -1,0 +1,164 @@
+<nz-table #localDrivesTable class="local-drive-table" 
+  [nzLoading]="generalLoading" 
+  [nzData]="filteredDrives"
+  [nzFrontPagination]="false" 
+  [nzShowPagination]="false"
+>
+  <thead>
+    <tr class="main-column">
+      <th nzWidth="20px">
+        <span nz-icon nzType="reload" nzTheme="outline" (click)="reloadTable()"></span>
+      </th>
+      <th [nzAlign]="textAlign">
+        <span nz-typography><strong>DRIVE</strong></span>
+      </th>
+      <th [nzAlign]="textAlign" nzWidth="150px">
+        <span nz-typography><strong>CAPACITY</strong></span>
+      </th>
+      <th [nzAlign]="textAlign" nzWidth="150px">
+        <span nz-typography><strong>FREE</strong></span>
+      </th>
+      <th [nzAlign]="textAlign" nzWidth="200px"></th>
+      <th [nzAlign]="textAlign" nzWidth="180px"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-template ngFor let-data [ngForOf]="localDrivesTable.data" let-x="index">
+      <tr (mouseover)="highlightRow(x,'','')" (mouseleave)="highlightRow('','','')">
+        <td [(nzExpand)]="data.expand"></td>
+        <td [nzAlign]="textAlign" [innerHtml]="(data.driveName | highlight:searchText:searchText)">
+        </td>
+        <td [nzAlign]="textAlign">{{ data.TotalSize | fileSize }}</td>
+        <td [nzAlign]="textAlign">{{ data.TotalFreeSpace | fileSize }}</td>
+        <td>
+          <nz-progress class="local-drive-size" nz-tooltip nzTitle="3 done / 3 in progress / 4 to do"
+            [nzPercent]="data.usedProgress"></nz-progress>
+        </td>
+        <td>
+          <div [hidden]="!(selectedRowIndex == x+'')">
+            <button nz-button class="btnIconOnly" nzType="default"><span nz-icon nzType="pause"></span></button>
+            <button nz-button class="btnIconOnly" nzType="default" (click)="showSyncSpaceModal('Add',data.Name)"><span
+                nz-icon nzType="plus"></span></button>
+            <button nz-button class="btnIconOnly" nzType="default"><span nz-icon nzType="more"></span></button>
+          </div>
+        </td>
+      </tr>
+      <tr [nzExpand]="data.expand">
+        <nz-table #innerTable [nzData]="data.SyncSpaces" nzSize="small" [nzShowPagination]="false">
+          <thead>
+            <tr class="sync-space-header">
+              <th nzWidth="50px"></th>
+              <th [nzAlign]="textAlign">
+                <span nz-typography><strong>PROJECT SPACE NAME</strong></span>
+              </th>
+              <th [nzAlign]="textAlign" nzWidth="150px" nzAlign="center">
+                <span nz-typography><strong>SIZE</strong></span>
+              </th>
+              <th [nzAlign]="textAlign" nzWidth="150px">
+                <span nz-typography><strong>STATUS</strong></span>
+              </th>
+              <th [nzAlign]="textAlign" nzWidth="200px">
+                <span nz-typography><strong>SYNC PROGRESS</strong></span>
+              </th>
+              <th nzWidth="180px"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-template ngFor let-innerdata [ngForOf]="innerTable.data" let-i="index">
+              <tr (click)="selectedRow(innerdata)" (dblclick)="openSyncSpace(innerdata.Path)" (mouseover)="highlightRow(x,i,'')"
+                (mouseleave)="highlightRow('','','')">
+                <td [(nzExpand)]="innerdata.expand"></td>
+                <td [nzAlign]="textAlign" [innerHtml]="(innerdata.Label | highlight:searchText:searchText)"></td>
+                <td [nzAlign]="textAlign">{{ innerdata.SyncStatus.LocalBytes | fileSize}}</td>
+                <td [nzAlign]="textAlign"
+                  [ngClass]="{'syncing': innerdata.SyncStatus.State === 'syncing', 'status-idle': innerdata.SyncStatus.State === 'idle'}">
+                  {{ innerdata.SyncStatus.State }}
+                </td>
+                <td [nzAlign]="textAlign">
+                  <nz-progress [nzPercent]=innerdata.SyncStatus.ConnectionStatus.PercentComplete
+                    [nzShowInfo]=true></nz-progress>
+                </td>
+                <td>
+                  <div [hidden]="!(selectedRowIndex == x+''+i)">
+                    <button nz-button class="btnIconOnly" nzType="default"><span nz-icon nzType="pause"></span></button>
+                    <button nz-button class="btnIconOnly" nzType="default"><span nz-icon nzType="user-add"></span></button>
+                    <button nz-button class="btnIconOnly" nzType="default" nz-dropdown [nzDropdownMenu]="syncSpaceKebobMenu"
+                      nzTrigger="click">
+                      <span nz-icon nzType="more"></span>
+                      <nz-dropdown-menu #syncSpaceKebobMenu="nzDropdownMenu">
+                        <ul nz-menu>
+                          <li nz-menu-item (click)="showSyncSpaceModal('Rename', innerdata)">Rename Space</li>
+                          <li nz-menu-item (click)="showConfirm('Remove',null)">Remove Space</li>
+                          <li nz-menu-item (click)="showConfirm('Delete',tplDeleteContent)">Delete Space</li>
+
+                        </ul>
+                      </nz-dropdown-menu></button>
+                  </div>
+                </td>
+              </tr>
+              <tr [nzExpand]="innerdata.expand">
+                <nz-table #syncedDeviceTable [nzData]="innerdata.SyncStatus.SyncdWithDevices" nzSize="small"
+                  [nzShowPagination]="false">
+                  <thead>
+                    <tr class="sync-space-header">
+                      <th nzWidth="80px"></th>
+                      <th>
+                        <span nz-typography>
+                          <strong>USER</strong>
+                        </span>
+                      </th>
+                      <th nzWidth="150px" nzAlign="center">
+                        <span nz-typography><strong>LOCAL SIZE</strong></span>
+                      </th>
+                      <th nzWidth="150px"></th>
+                      <th nzWidth="200px"></th>
+                      <th nzWidth="180px"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-template ngFor let-syncDevice [ngForOf]="syncedDeviceTable.data" let-y="index">
+                      <tr (mouseover)="highlightRow(x,i,y)" (mouseleave)="highlightRow('','','')">
+                        <!-- <td [(nzExpand)]="syncDevice.expand"></td> -->
+                        <td></td>
+                        <td [nzAlign]="textAlign" [innerHtml]="(syncDevice.name | highlight:searchText:searchText)"></td>
+                        <td [nzAlign]="textAlign">{{ syncDevice.maxRequestKiB | fileSize}}</td>
+                        <td [nzAlign]="textAlign" [ngClass]="{'syncing': syncDevice.DeviceCompletion.IsSyncing, 'status-idle': !syncDevice.DeviceCompletion.IsSyncing}">
+                          <span nz-typography>Syncing</span>
+                        </td>
+                        <td [nzAlign]="textAlign">
+                          <nz-progress [nzPercent]="syncDevice.DeviceCompletion.Completion" [nzShowInfo]="true"></nz-progress>
+                        </td>
+                        <td>
+                          <div [hidden]="!(selectedRowIndex == x+''+i+''+y)">
+                            <button nz-button class="btnIconOnly" nzType="default"><span nz-icon nzType="pause"></span></button>
+                            <button nz-button class="btnIconOnly" nzType="default"><span nz-icon nzType="close"></span></button>
+                            <button nz-button class="btnIconOnly" nzType="default"><span nz-icon nzType="more"></span></button>
+                          </div>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                </nz-table>
+              </tr>
+            </ng-template>
+          </tbody>
+        </nz-table>
+      </tr>
+    </ng-template>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="showAddSyncSpace" nzTitle={{syncSpaceTitle}} (nzOnCancel)="handleSyncSpaceCancel()"
+  (nzOnOk)="handleSyncSpaceOk()">
+  <ng-container *nzModalContent>
+    <p [hidden]="syncAction!='Add'"><button nz-button (click)="selectFolderPath()"> Select Location </button> {{
+      newSyncSpacePath }}</p>
+    <p>{{syncActionLabel}} : <input nz-input [(ngModel)]="newSyncSpaceName" /></p><br>
+    <p [hidden]=showRenameNote> NOTE: Changing the name of this space only affects the folder on your local system.
+      Other users syncing this space will see the original name until they change it on their own system. </p>
+  </ng-container>
+</nz-modal>
+
+<ng-template #tplDeleteContent let-params>
+  <p><input nz-input [(ngModel)]="confirmDeleteText" /></p>
+</ng-template>

@@ -1,0 +1,35 @@
+# Node.js with Angular
+# Build a Node.js project that uses Angular.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- none
+
+pool:
+  vmImage: windows-latest
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+  displayName: 'Install dependencies'
+
+- script: |
+    npm run build-installer
+  displayName: 'Build SOS Installer'
+
+- task: S3Upload@1
+  displayName: 'Upload executable to S3'
+  inputs:
+    awsCredentials: 'Promax S3'
+    regionName: 'us-east-1'
+    bucketName: 'phnshows'
+    sourceFolder: '$(Build.SourcesDirectory)/dist'
+    globExpressions: '*.exe'
+    targetFolder: 'promax/promaxdesktop-app-installer'
+    filesAcl: 'public-read-write'

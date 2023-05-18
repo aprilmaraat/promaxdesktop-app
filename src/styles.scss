@@ -1,0 +1,37 @@
+/* You can add global styles to this file, and also import other style files */
+@import './styles/_variables';
+@import './styles/ng-zorro.custom.scss';
+
+body {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  overflow-y: hidden; 
+  border: solid 1px #0000004d;
+  background: $standard-white;
+}
+
+.center-position {
+	margin: auto;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.form {
+  @extend .center-position;
+  position: absolute;
+  padding: 40px;
+  background: transparent;
+}
+
+.form-margin {
+  margin-bottom: 16px;
+}
+
+.form-button {
+  width: 100%;
+}
+
+.highlighted-text{
+  background-color: $standard-theme-color;
+}

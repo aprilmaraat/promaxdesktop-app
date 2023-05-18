@@ -1,0 +1,87 @@
+<nz-layout class="nav-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="xl"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div class="sidebar-logo">
+      <span nz-icon>
+        <img src="https://pbs.twimg.com/profile_images/2820123366/45ba572f34cf4e3c2ef1846b4d2e14be_400x400.jpeg" alt="logo" style="width: 40px;">
+      </span>
+      <span>
+        <img src="https://www.promax.com/hs-fs/hubfs/Promax_May2018/Images/logo-promax@2x.png?width=690&name=logo-promax@2x.png" alt="logo" style="margin-left:-35px; margin-top:7px">
+    </span>
+    </div>
+    <ul class="menu-sidebar-item-list" nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-menu-item nzMatchRouter>
+        <span nz-icon nzType="file-sync"></span>
+        <span>
+          <a routerLink="/sync">Sync</a>
+        </span>
+      </li>
+      <li nz-menu-item nzMatchRouter>
+        <span nz-icon nzType="logout"></span>
+        <span>
+          <a (click)="logout();">Logout</a>
+        </span>
+      </li>
+  </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header class="global-header">
+      <div class="nav-header">
+        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">
+            <span class="trigger"
+               nz-icon
+               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+            ></span>
+        </span>
+          <nz-input-group class="global-header-input-group" 
+            [nzPrefix]="prefixTemplateSearch"
+            nzSize="large">
+            <input [(ngModel)]="searchKeyword" (ngModelChange)="search(searchKeyword)" type="text" nz-input [placeholder]="searchPlaceholder" />
+          </nz-input-group>
+          <nz-space class="global-header-extra" [nzSize]="20">
+            <nz-badge *nzSpaceItem [nzCount]="5">
+              <span class="global-header-icon" nz-icon nzType="bell" nzTheme="outline"></span>
+            </nz-badge>
+            <span class="global-header-icon" *nzSpaceItem nz-icon nzType="setting" nzTheme="outline"></span>
+            <nz-avatar class="global-header-icon" *nzSpaceItem nzIcon="user"></nz-avatar>
+            <span nz-typography *nzSpaceItem>{{currentName}}'s Workstation</span>
+          </nz-space>
+        </div>
+
+        <nz-alert
+          *ngIf="showKillPids"
+          nzType="warning"
+          nzMessage="Syncthing"
+          nzDescription="Please wait while SOS shuts down Syncthing PIDS..."
+          nzShowIcon
+        ></nz-alert>
+
+        <nz-alert
+          *ngIf="showErrorKillPids"
+          nzType="error"
+          nzMessage="Syncthing"
+          nzDescription="License error. Shutting down Syncthing PIDS..."
+          nzShowIcon
+        ></nz-alert>
+
+        <nz-alert
+          *ngIf="syncServiceStopped"
+          nzType="error"
+          nzMessage="Syncthing"
+          nzDescription="Syncthing has stopped."
+          nzShowIcon
+        ></nz-alert>
+    </nz-header>
+
+    <nz-content>
+      <div class="inner-content">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>
+<ng-template #prefixTemplateSearch><span nz-icon nzType="search" nzTheme="outline"></span></ng-template>

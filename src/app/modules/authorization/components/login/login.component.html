@@ -1,0 +1,56 @@
+<form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="submitForm()">
+  <sos-form-header [headerLabel]="'Sign in'">
+    <div>
+      <a class="login-form-forgot" routerLink="/auth/register">I don't have an account</a>
+    </div>
+  </sos-form-header>
+
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="emailErrorTip">
+      <nz-input-group>
+        <input nz-input
+          type="text"
+          formControlName="userNameOrEmailAddress" 
+          [placeholder]="emailPlaceholder" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control [nzErrorTip]="passwordErrorTip">
+      <nz-input-group [nzSuffix]="suffixTemplate">
+        <input nz-input 
+          [type]="passwordVisible ? 'text' : 'password'"
+          formControlName="password"
+          [placeholder]="passwordPlaceholder" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control>
+      <label nz-checkbox formControlName="rememberClient">
+        <span>Remember me</span>
+      </label>
+    </nz-form-control>
+  </nz-form-item>
+
+  <button nz-button class="form-button form-margin" 
+    [nzType]="'primary'"
+    [nzSize]="'large'"
+    [disabled]="submitWait">
+    <span *ngIf="!submitWait; else buttonLoading;">{{signInLabel}}</span>
+  </button>
+
+  <div class="center-link-div">
+    <a class="login-form-forgot" routerLink="/welcome">Forgot password?</a>
+  </div>
+</form>
+
+<ng-template #suffixTemplate>
+  <span nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></span>
+</ng-template>
+
+<ng-template #buttonLoading>
+  <nz-spin nzSimple></nz-spin>
+</ng-template>

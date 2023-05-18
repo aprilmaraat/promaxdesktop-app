@@ -1,0 +1,63 @@
+.ant-progress-inner{
+  height: 10px;
+}
+
+.local-drive-size .ant-progress-inner{
+  height: 25px;
+}
+
+.ant-progress-bg {
+  height: 100% !important;
+}
+
+.ant-progress-success-bg{
+  height: 100% !important;
+}
+
+.status-idle {
+  color:#1890ff;
+}
+
+.status-syncing {
+  color:#52c41a;
+}
+
+.local-drive-table tr{
+  line-height: 34px;
+}
+
+// .local-drive-table tr th{
+//   font-size: 20px;
+// }
+
+.local-drive-table tr td{
+  font-size: 14px;
+}
+
+.ant-table.ant-table-middle tr th{
+  font-size: 16px;
+}
+
+.ant-table.ant-table-middle tr td{
+  font-size: 12px;
+}
+
+.btnIconOnly{
+  background: #fff0 !important;
+  border: 1px solid #d9d9d900;
+  box-shadow: 0 0 rgba(255, 255, 255, 0) !important;
+}
+
+.btnIconOnly:hover, .btnIconOnly:focus{
+  background: #fff0 !important;
+  border: 1px solid #d9d9d900;
+  box-shadow: 0 0 rgba(255, 255, 255, 0) !important;
+}
+
+.ant-table-thead>tr>th{
+  background: #f3f1f1;
+}
+
+.ant-table-tbody>tr.ant-table-row:hover>td, .ant-table-tbody>tr>td.ant-table-cell-row-hover{
+  background: #9ed2ff!important;
+}

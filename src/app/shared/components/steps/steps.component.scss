@@ -1,0 +1,7 @@
+@import '../../../../styles.scss';
+
+.steps {
+  @extend .center-position;
+  width: 469px;
+  margin-bottom: 15px;
+}

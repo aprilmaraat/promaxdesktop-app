@@ -1,0 +1,145 @@
+{
+  "name": "promaxdesktop-app",
+  "version": "0.0.0",
+  "main": "app.js",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng build --base-href ./ && electron .",
+    "start-dev": "ng build --configuration=dev --base-href ./ && electron .",
+    "build": "ng build",
+    "build-installer": "ng build --base-href ./ && electron-builder",
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "ng e2e"
+  },
+  "build": {
+    "productName": "ProMAX SOS",
+    "appId": "promaxdesktop-app",
+    "files": [
+      "*.js",
+      "dist/promaxdesktop-app"
+    ],
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "src/assets/logo512.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": true,
+      "installerIcon": "src/assets/logo512.ico",
+      "uninstallerIcon": "src/assets/logo512.ico",
+      "uninstallDisplayName": "ProMAX SOS Uninstaller",
+      "license": "license.md",
+      "allowElevation": true,
+      "include": "src/assets/installer.nsh",
+      "deleteAppDataOnUninstall": true
+    },
+    "extraFiles": [
+      {
+        "from": "src/assets",
+        "to": "resources",
+        "filter": [
+          "setup.exe",
+          "Setup6.msi"
+        ]
+      }
+    ],
+    "mac": {
+      "target": "dmg",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": true,
+      "extendInfo": {
+        "NSAppleEventsUsageDescription": "Allow ProMAX SOS to use Apple Events.",
+        "NSCameraUsageDescription": "Allow ProMAX SOS to use the camera.",
+        "NSScreenCaptureDescription": "Allow ProMAX SOS to take screenshots."
+      }
+    },
+    "dmg": {
+      "background": "logo512.png",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 255,
+          "y": 85,
+          "type": "file"
+        },
+        {
+          "x": 253,
+          "y": 325,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 500,
+        "height": 500
+      }
+    },
+    "linux": {
+      "desktop": {
+        "StartupNotify": "false",
+        "Encoding": "UTF-8",
+        "MimeType": "x-scheme-handler/deeplink"
+      },
+      "target": [
+        "AppImage",
+        "rpm",
+        "deb"
+      ]
+    },
+    "deb": {
+      "priority": "optional",
+      "afterInstall": "installer/linux/after-install.tpl"
+    },
+    "rpm": {
+      "fpm": [
+        "--before-install",
+        "installer/linux/before-install.tpl"
+      ],
+      "afterInstall": "installer/linux/after-install.tpl"
+    }
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/animations": "^14.2.0",
+    "@angular/common": "^14.2.0",
+    "@angular/compiler": "^14.2.0",
+    "@angular/core": "^14.2.0",
+    "@angular/forms": "^14.2.0",
+    "@angular/platform-browser": "^14.2.0",
+    "@angular/platform-browser-dynamic": "^14.2.0",
+    "@angular/router": "^14.2.0",
+    "@jridgewell/sourcemap-codec": "^1.4.14",
+    "d3-shape": "^3.1.0",
+    "d3-zoom": "^3.0.0",
+    "dagre": "^0.8.5",
+    "dagre-compound": "^0.0.13",
+    "monaco-editor": "^0.34.1",
+    "ng-zorro-antd": "^14.1.1",
+    "object-assign": "^4.1.1",
+    "rxjs": "~7.5.0",
+    "system-disk": "^1.1.2",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.4"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "^14.2.10",
+    "@angular/cli": "~14.2.6",
+    "@angular/compiler-cli": "^14.2.0",
+    "@types/d3-zoom": "^3.0.1",
+    "@types/dagre": "^0.7.48",
+    "@types/jasmine": "~4.0.0",
+    "electron": "^21.2.0",
+    "electron-builder": "^23.6.0",
+    "electron-rebuild": "^3.2.9",
+    "jasmine-core": "~4.3.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.1.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.0.0",
+    "typescript": "~4.7.2"
+  }
+}

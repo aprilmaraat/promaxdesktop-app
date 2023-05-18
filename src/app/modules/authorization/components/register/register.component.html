@@ -1,0 +1,287 @@
+<form nz-form class="register-form" (ngSubmit)="submitForm()">
+  <sos-form-header class="form-header" [headerLabel]="'Sign up'">
+    <div>
+      <a class="login-form-forgot" routerLink="/auth/login">Already have an account?</a>
+    </div>
+  </sos-form-header>
+
+  <sos-steps class="form-steps"
+    [currentStepIndex]="currentStep"
+    [steps]="steps"></sos-steps>
+   
+  <div class="input-container" 
+    [ngClass]="{'width-step-1': currentStep === 0, 'width-step-2': currentStep >= 1}">
+
+    <div nz-row [nzGutter]="24">
+      <div nz-col [nzSpan]="24" *ngIf="currentStep === 0" [formGroup]="createAccountGroup">
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="First name is required">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="firstName" 
+                placeholder="First name" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Last name is required">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="lastName" 
+                placeholder="Last name" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Invalid email format">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="emailAddress" 
+                placeholder="Enter your email" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Email must match">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="confirmEmail" 
+                placeholder="Confirm your email" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Password is required">
+            <nz-input-group [nzSuffix]="passwordSuffixIcon">
+              <input nz-input
+                [type]="passwordVisible ? 'text' : 'password'"
+                formControlName="password" 
+                placeholder="Enter your password" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Password must match">
+            <nz-input-group [nzSuffix]="confirmPasswordSuffixIcon">
+              <input nz-input
+                [type]="confirmPasswordVisible ? 'text' : 'password'"
+                formControlName="confirmPassword" 
+                placeholder="Confirm your password" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+      </div>
+
+      <div nz-col [nzSpan]="12" *ngIf="currentStep === 1" [formGroup]="contactInfoGroup">
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Phone number is required">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="phoneNumber" 
+                placeholder="Phone Number" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Address is required">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="address1" 
+                placeholder="Address 1"/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="address2" 
+                placeholder="Address 2"/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="City is required">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="city" 
+                placeholder="City"/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Please select your country">
+            <nz-select nzShowSearch nzAllowClear
+              (nzOnSearch)="getCountries()"
+              formControlName="userCountry"
+              nzPlaceHolder="Country"
+            >
+              <nz-option *ngFor="let country of countries" nzValue="{{country.id}}" nzLabel="{{country.name}}"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Postal code is required">
+            <nz-input-group>
+              <input nz-input
+                type="number"
+                formControlName="postCode" 
+                placeholder="Postal Code"/>
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+        
+      </div>
+
+      <div nz-col [nzSpan]="12" *ngIf="currentStep === 1" [formGroup]="contactInfoGroup">
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Timezone is required">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="timeZone" 
+                placeholder="Your Timezone" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="roleTitle" 
+                placeholder="Your Title/Role" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Company name required">
+            <nz-input-group>
+              <input nz-input
+                type="text"
+                formControlName="companyName" 
+                placeholder="Company Name" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Please select country">
+            <nz-select nzShowSearch nzAllowClear 
+              (nzOnSearch)="getCountries()"
+              formControlName="companyStateCountry"
+              nzPlaceHolder="State/Country company is based"
+            >
+              <nz-option *ngFor="let country of countries" [nzValue]="country.id" [nzLabel]="country.name"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="">
+            <nz-input-group>
+              <input nz-input
+                type="number"
+                formControlName="companySize" 
+                placeholder="Company Size" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control nzErrorTip="Creative team size required">
+            <nz-input-group>
+              <input nz-input
+                type="number"
+                formControlName="creativeTeamSize" 
+                placeholder="Creative Team Size" />
+            </nz-input-group>
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+
+      <div nz-col class="eula-container" [nzSpan]="24" *ngIf="currentStep === 2" [formGroup]="eulaGroup">
+        <div class="eula-text">
+          <sos-eula></sos-eula>
+        </div>
+        <div class="terms-label">
+          <label nz-checkbox formControlName="acceptTerms" [(ngModel)]="checked">Agree with Terms & Conditions</label>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="input-container width-step-1">
+      <div nz-row [nzGutter]="24">
+        <div nz-col *ngIf="currentStep <= 0; else twoButton;" [nzSpan]="24">
+          <button nz-button class="form-button form-margin"
+            type="button"
+            [nzType]="'primary'"
+            [nzSize]="nzSize"
+            (click)="nextStep()">Next</button>
+        </div>
+        <ng-template #twoButton>
+          <div nz-col [nzSpan]="12">
+            <button nz-button class="form-button form-margin"
+              type="button"
+              [nzType]="'primary'"
+              [nzSize]="nzSize"
+              (click)="previousStep()">Back</button>
+          </div>
+          <div nz-col [nzSpan]="12">
+            <button nz-button *ngIf="currentStep < (stepsLength -1); else createAccountButton;" class="form-button form-margin"
+              type="button"
+              [nzType]="'primary'"
+              [nzSize]="nzSize"
+              (click)="nextStep()">Next</button>
+            <ng-template #createAccountButton>
+              <button nz-button class="form-button form-margin" style="font-size: 12px;"
+                type="submit"
+                [nzType]="'primary'"
+                [nzSize]="nzSize"
+                [disabled]="!isFormValid()">Create Account</button>
+            </ng-template>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+
+</form>
+
+<ng-template #passwordSuffixIcon>
+  <span nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'" (click)="passwordVisible = !passwordVisible"></span>
+</ng-template>
+
+<ng-template #confirmPasswordSuffixIcon>
+  <span nz-icon [nzType]="confirmPasswordVisible ? 'eye-invisible' : 'eye'" (click)="confirmPasswordVisible = !confirmPasswordVisible"></span>
+</ng-template>
+
+<ng-template #inputLoading>
+  <nz-spin nzSimple></nz-spin>
+</ng-template>

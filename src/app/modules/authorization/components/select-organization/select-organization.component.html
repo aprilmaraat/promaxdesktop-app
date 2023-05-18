@@ -1,0 +1,22 @@
+
+<form nz-form class="select-organization-form">
+  <nz-form-item>
+    <nz-form-control>
+      <nz-form-label [nzSm]="6" [nzXs]="24">Select Organization:</nz-form-label>
+      <nz-select nzShowSearch nzAllowClear 
+        nzPlaceHolder="Organizations" 
+        nzSize="large" 
+        [(ngModel)]="selectedValue"
+        (ngModelChange)="onSelect();">
+        <nz-option *ngFor="let item of data" [nzLabel]="item.organizationName" [nzValue]="item.id"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control>
+      <label nz-checkbox [(ngModel)]="rememberOrganization">
+        <span>Remember my organization</span>
+      </label>
+    </nz-form-control>
+  </nz-form-item>
+</form>

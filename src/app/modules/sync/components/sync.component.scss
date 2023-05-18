@@ -1,0 +1,15 @@
+.main-column {
+  background: #f0f2f5;
+
+  & > th {
+    background: inherit;
+  }
+}
+
+.sync-space-header {
+  height: 30px;
+  & > th {
+    background: transparent;
+    height: inherit;
+  }
+}

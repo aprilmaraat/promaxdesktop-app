@@ -1,0 +1,49 @@
+@import '../../../../../styles.scss';
+
+.register-form {
+  @extend .form;
+  margin-top: 34px;
+  width: 100%;
+} 
+
+.form-page-header {
+  margin-bottom: 30px;
+}
+
+// .form-steps {
+//   margin-bottom: 30px;
+// }
+
+.input-container {
+  @extend .center-position;
+  width: auto;
+  height: auto;
+}
+
+.width-step-1 {
+  width: 287px;
+}
+
+.width-step-2 {
+  width: 594px;
+}
+
+
+.eula-container {
+  // margin-bottom: 30px;
+
+  .eula-text {
+    width: 594px;
+    height: 400px;
+    overflow-y: auto;
+    border: solid 1px $standard-border-color;
+    padding: 0;
+  }
+}
+
+.terms-label {
+  text-align: center;
+  width: 100%;
+  padding: 15px 0;
+  margin-bottom: 15px;
+}

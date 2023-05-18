@@ -1,0 +1,5 @@
+<nz-steps class="steps" [nzCurrent]="currentStepIndex">
+  <nz-step *ngFor="let step of steps" 
+    nzTitle="{{stepTitle(step.description)}}" 
+    nzDescription="{{step.description}}"></nz-step>
+</nz-steps>

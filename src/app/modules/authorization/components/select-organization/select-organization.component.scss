@@ -1,0 +1,8 @@
+@import '../../../../../styles.scss';
+
+.select-organization-form {
+  @extend .form;
+  margin-top: 34px;
+  height: 468px;
+  width: 475px;
+}
